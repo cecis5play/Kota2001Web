@@ -1,0 +1,42 @@
+﻿@model VehicleDetailViewModel
+
+@{
+    ViewBag.Title = "Vehicle Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="card text-center mx-auto" style="width: 30rem;">
+    <div class="card-body">
+        <h5 class="card-title" style="font-size: xxx-large;font-family: ui-monospace;">@Model.Model</h5>
+        <p class="card-text" style="  font-size: xx-large;">Рег.Номер: @Model.RegNumber</p>
+        @if (Model.Thirdpartyliabilityinsurance <= DateTime.Now)
+        {
+            <p class="card-text" style="  font-size: larger; color: red;">Гражданската отговорност е изстекла на  @Model.Thirdpartyliabilityinsurance</p>
+        }
+        else
+        {
+            <p class="card-text" style="  font-size: larger;">Гражданската отговорност изстича на @Model.Thirdpartyliabilityinsurance</p>
+        }
+        @if (Model.Casko <= DateTime.Now)
+        {
+            <p class="card-text" style="  font-size: larger; color: red;">Каското е изстекло на @Model.Casko</p>
+        }
+        else
+        {
+            <p class="card-text" style="  font-size: larger;">Каското изстича на @Model.Casko</p>
+        }
+        @if (Model.Vignette <= DateTime.Now)
+        {
+            <p class="card-text" style="  font-size: larger;color: red;">Винетката е изстекла на @Model.Vignette</p>
+        }
+        else
+        {
+            <p class="card-text" style="  font-size: larger;">Винетката изстича на @Model.Vignette</p>
+        }
+        <p class="card-text" style="  font-size: larger;">Категория: @Model.VType</p>
+        <a class="btn btn-success" asp-controller="Vehicle" asp-action="Edit" asp-route-id="@Model.Id">Поднови</a>
+        <a class="ml-2 btn btn-danger" asp-controller="Vehicle" asp-action="Delete" asp-route-id="@Model.Id">Изстрий</a>
+    </div>
+</div>
