@@ -1,5 +1,7 @@
 ﻿using Kota2001Web.Data;
+using Kota2001Web.Data.Entities;
 using Kota2001Web.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kota2001Web.Services
 {
@@ -19,11 +21,12 @@ namespace Kota2001Web.Services
                 .Select(v => new VehicleViewModel 
                 { 
                     Id = v.Id,
-                    Model = v.Model,
+                    VModel = v.VModel,
                     RegNumber = v.RegNumber,
                     Thirdpartyliabilityinsurance = v.Thirdpartyliabilityinsurance,
                     Casko = v.Casko,
                     Vignette = v.Vignette,
+                    Area = v.Area,
                     VType = v.VType.Name
 
                 })                
@@ -38,11 +41,12 @@ namespace Kota2001Web.Services
                 .Select(v => new VehicleDetailViewModel
                 {
                     Id = id,
-                    Model = v.Model,
+                    VModel = v.VModel,
                     RegNumber = v.RegNumber,
                     Thirdpartyliabilityinsurance = v.Thirdpartyliabilityinsurance,
                     Casko = v.Casko,
                     Vignette = v.Vignette,
+                    Area = v.Area,
                     VType = v.VType.Name
                 })
                 .FirstOrDefault();
@@ -57,13 +61,47 @@ namespace Kota2001Web.Services
         {
             var vehicle = this.context.Vehicles.Where(v => v.Id == model.Id).First();
 
-            vehicle.Model = model.Model;
+            vehicle.VModel = model.VModel;
             vehicle.RegNumber = model.RegNumber;
             vehicle.Thirdpartyliabilityinsurance = model.Thirdpartyliabilityinsurance;
             vehicle.Casko = model.Casko;
             vehicle.Vignette = model.Vignette;
-            vehicle.VType.Name = model.VType;
+            vehicle.Area = model.Area;
+            vehicle.TypeId = model.VTypeId;
 
+            this.context.SaveChanges();
+        }
+        public int Create(VehicleFormModel model)
+        {
+            var vehicle = new Vehicle
+            {
+                VModel = model.VModel,
+                RegNumber = model.RegNumber,
+                Thirdpartyliabilityinsurance = model.Thirdpartyliabilityinsurance,
+                Casko = model.Casko,
+                Vignette = model.Vignette,
+                Area = model.Area,
+                TypeId = model.VTypeId
+            };
+
+            this.context.Vehicles.Add(vehicle);
+            this.context.SaveChanges();
+            return vehicle.Id;
+        }
+        public IEnumerable<VTypeModel> getVModelTypes()
+        {
+            var vTypes = context.VTypes.Select(v => new VTypeModel
+            {
+                Id = v.Id,
+                Name = v.Name,
+            }).ToList();
+            return vTypes;
+        }
+        public void Delete(int id)
+        {
+            var vehicle = this.context.Vehicles.First(h => h.Id == id);
+
+            this.context.Vehicles.Remove(vehicle);
             this.context.SaveChanges();
         }
     }

@@ -1,7 +1,7 @@
 ﻿@model VehicleFormModel
 
 @{
-    ViewBag.Title = "Edit Vehicle";
+    ViewBag.Title = "Добавяне на МПС";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form method="post" asp-controller="Vehicle" asp-action="Edit">
+        <form method="post" asp-controller="Vehicle" asp-action="Add">
             <div class="form-group">
                 <label asp-for="VModel">Модел</label>
                 <input asp-for="VModel" class="form-control" placeholder="Модел...">
@@ -42,15 +42,15 @@
             </div>
             <label>Клас на МПС-то</label>
             <select class="form-select" aria-label="Default select example" asp-for="VTypeId">
-                @foreach(var item in Model.VTypes)
+                @foreach (var item in Model.VTypes)
                 {
-                        <option value="@item.Id">@item.Name</option>
+                    <option value="@item.Id">@item.Name</option>
                 }
 
-            
+
             </select>
 
-            <input class="btn btn-primary mt-3" type="submit" value="Запази" />
+            <input class="btn btn-primary mt-3" type="submit" value="Добави" />
         </form>
     </div>
 </div>

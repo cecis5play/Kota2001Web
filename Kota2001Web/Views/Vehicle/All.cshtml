@@ -5,20 +5,50 @@
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
+
 <div class="row">
+    <div class="col-md-6">
+        <form method="get" class="d-flex" style="height: 50px" asp-action="All" asp-controller="Vehicle">
+            <input name="searchString" class="form-control me-1" type="search" placeholder="Търси по рег.номер или модел..." aria-label="Search">
+
+            <button class="btn btn-dark" type="submit">Търси</button>
+            <a asp-action="All" class="btn btn-link text-dark">Изчисти</a>
+
+        </form>
+        
+    </div>
+</div>
+<div class="row" style="padding-top: 30px">
        @foreach(var item in Model)
        {
 
-        <div class="col-sm-4">
-            <div class="card">
+        <div class="col-sm-4" style="padding-top: 20px">
+            @if (item.Thirdpartyliabilityinsurance <= DateTime.Now || item.Casko <= DateTime.Now || item.Vignette <= DateTime.Now)
+            {
+                <div class="card card text-white bg-danger mb-3">
+
                 <div class="card-body">
-                    <h5 class="card-title">@item.Model</h5>
+                    <h5 class="card-title">@item.VModel</h5>
                     <h3 class="card-text">@item.RegNumber</h3>
                     <p class="card-text">@item.VType</p>
                     <a class="btn btn-primary" asp-controller="Vehicle" asp-action="VehiclesDetails" asp-route-id="@item.Id">Разбери Повече</a>
    
                 </div>
-            </div>
+                </div>
+            }
+            else
+            {
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@item.VModel</h5>
+                        <h3 class="card-text">@item.RegNumber</h3>
+                        <p class="card-text">@item.VType</p>
+                        <a class="btn btn-primary" asp-controller="Vehicle" asp-action="VehiclesDetails" asp-route-id="@item.Id">Разбери Повече</a>
+
+                    </div>
+                </div>
+            }
         </div>
 
        }

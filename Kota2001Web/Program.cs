@@ -8,7 +8,7 @@ namespace Kota2001Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +24,7 @@ namespace Kota2001Web
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            })
+            }).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddTransient<IVehicleService, VehicleService>();
@@ -55,6 +55,38 @@ namespace Kota2001Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var role = "Admin";
+                if (!await roleManager.RoleExistsAsync(role))
+                
+                
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                
+            }
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                string email = "admin@admin.com";
+                string password = "Admin1234";
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new User();
+                    user.UserName = email;
+                    user.Email = email;
+                    user.FirstName = "Admin";
+                    user.FirstName = "Admin";
+                    user.PhoneNumber = "0889705461";
+
+                   await userManager.CreateAsync(user, password);
+
+                    await userManager.AddToRoleAsync(user, "Admin");
+                }
+               
+
+            }
 
             app.Run();
         }

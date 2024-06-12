@@ -10,5 +10,8 @@ namespace Kota2001Web.Services
 
         bool Exists(int id);
         void Edit(VehicleFormModel model);
+        int Create(VehicleFormModel model);
+        void Delete(int id);
+        public IEnumerable<VTypeModel> getVModelTypes();
     }
 }

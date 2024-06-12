@@ -40,7 +40,7 @@ namespace Kota2001Web.Data
             this.firstvehicle = new Vehicle()
             {
                 Id = 1,
-                Model = "Toyota",
+                VModel = "Toyota",
                 RegNumber = "CA 4444 PC",
                 Thirdpartyliabilityinsurance = new DateTime(2023, 12, 27),
                 Casko = new DateTime(2025, 3, 19),
@@ -50,7 +50,7 @@ namespace Kota2001Web.Data
             this.seccondvehicle = new Vehicle()
             {
                 Id = 2,
-                Model = "Honda Jazz",
+                VModel = "Honda Jazz",
                 RegNumber = "CB 6001 KX",
                 Thirdpartyliabilityinsurance = new DateTime(2025, 11, 30),
                 Casko = new DateTime(2026, 12, 10),
@@ -60,7 +60,7 @@ namespace Kota2001Web.Data
             this.thirdvehicle = new Vehicle()
             {
                 Id = 3,
-                Model = "Toyota",
+                VModel = "Toyota",
                 RegNumber = "CA 1654 PC",
                 Thirdpartyliabilityinsurance = new DateTime(2026, 8, 21),
                 Casko = new DateTime(2023, 12, 27),

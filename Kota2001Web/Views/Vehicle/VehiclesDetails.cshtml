@@ -1,42 +1,63 @@
-﻿@model VehicleDetailViewModel
+﻿@using Kota2001Web.Data.Entities
+@using Microsoft.AspNetCore.Identity
+@model VehicleDetailViewModel
 
 @{
-    ViewBag.Title = "Vehicle Details";
+    ViewBag.Title = "Информация на Мпс-то";
 }
-
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="card text-center mx-auto" style="width: 30rem;">
     <div class="card-body">
-        <h5 class="card-title" style="font-size: xxx-large;font-family: ui-monospace;">@Model.Model</h5>
+        <h5 class="card-title" style="font-size: xxx-large;font-family: ui-monospace;">@Model.VModel</h5>
         <p class="card-text" style="  font-size: xx-large;">Рег.Номер: @Model.RegNumber</p>
-        @if (Model.Thirdpartyliabilityinsurance <= DateTime.Now)
+        @if (Model.Thirdpartyliabilityinsurance == null)
         {
-            <p class="card-text" style="  font-size: larger; color: red;">Гражданската отговорност е изстекла на  @Model.Thirdpartyliabilityinsurance</p>
+            <p class="card-text" style="  font-size: larger;font-weight: bold;">Няма текуща информация за Гражданската отговорност</p>
         }
-        else
+        @if (Model.Thirdpartyliabilityinsurance <= DateTime.Now && Model.Thirdpartyliabilityinsurance != null)
         {
-            <p class="card-text" style="  font-size: larger;">Гражданската отговорност изстича на @Model.Thirdpartyliabilityinsurance</p>
+            <p class="card-text" style="  font-size: larger; color: red;font-weight: bold;">Гражданската отговорност е изстекла на  @Model.Thirdpartyliabilityinsurance</p>
         }
-        @if (Model.Casko <= DateTime.Now)
+        else if (Model.Thirdpartyliabilityinsurance >= DateTime.Now && Model.Thirdpartyliabilityinsurance != null)
         {
-            <p class="card-text" style="  font-size: larger; color: red;">Каското е изстекло на @Model.Casko</p>
+            <p class="card-text" style="  font-size: larger;font-weight: bold;color: green">Гражданската отговорност изстича на @Model.Thirdpartyliabilityinsurance</p>
         }
-        else
+        @if (Model.Casko == null)
         {
-            <p class="card-text" style="  font-size: larger;">Каското изстича на @Model.Casko</p>
+            <p class="card-text" style="  font-size: larger;font-weight: bold;">Няма текуща информация за Каско</p>
         }
-        @if (Model.Vignette <= DateTime.Now)
+        @if (Model.Casko <= DateTime.Now && Model.Casko != null)
         {
-            <p class="card-text" style="  font-size: larger;color: red;">Винетката е изстекла на @Model.Vignette</p>
+            <p class="card-text" style="  font-size: larger; color: red;font-weight: bold;">Каското е изстекло на @Model.Casko</p>
         }
-        else
+        else if (Model.Thirdpartyliabilityinsurance >= DateTime.Now && Model.Casko != null)
         {
-            <p class="card-text" style="  font-size: larger;">Винетката изстича на @Model.Vignette</p>
+            <p class="card-text" style="  font-size: larger;font-weight: bold;color: green">Каското изстича на @Model.Casko</p>
         }
-        <p class="card-text" style="  font-size: larger;">Категория: @Model.VType</p>
+        @if (Model.Vignette == null)
+        {
+            <p class="card-text" style="  font-size: larger;font-weight: bold;">Няма текуща информация за Винетка</p>
+        }
+        @if (Model.Vignette <= DateTime.Now && Model.Vignette != null)
+        {
+            <p class="card-text" style="  font-size: larger;color: red;font-weight: bold;">Винетката е изстекла на @Model.Vignette</p>
+        }
+        else if (Model.Vignette >= DateTime.Now && Model.Vignette != null)
+        {
+            <p class="card-text" style="  font-size: larger;font-weight: bold;color: green">Винетката изстича на @Model.Vignette</p>
+        }
+        <p class="card-text" style="font-size: large;">Местност: @Model.Area</p>
+        <p class="card-text" style="font-size: large;">Категория: @Model.VType</p>
+                                @if (this.User?.Identity?.IsAuthenticated == true)
+                        {
         <a class="btn btn-success" asp-controller="Vehicle" asp-action="Edit" asp-route-id="@Model.Id">Поднови</a>
-        <a class="ml-2 btn btn-danger" asp-controller="Vehicle" asp-action="Delete" asp-route-id="@Model.Id">Изстрий</a>
+                             @if (User.IsInRole("Admin"))
+                        {
+                <a class="ml-2 btn btn-danger" asp-controller="Vehicle" asp-action="Delete" asp-route-id="@Model.Id">Изтрий</a>
+                       }
+                        }
+
     </div>
 </div>

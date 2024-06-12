@@ -22,7 +22,7 @@ namespace Kota2001Web.Controllers
         public IActionResult Register()
         {
             var model = new RegisterFormModel();
-            return View();
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterFormModel model)
@@ -49,6 +49,35 @@ namespace Kota2001Web.Controllers
              await signInManager.SignInAsync(user, model.IsPersistent);
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            var model = new LoginFormModel();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("Error", "Входът е неуспешен");
+                  return View(model);
+            }
+            var validPassword = await userManager.CheckPasswordAsync(user, model.Password);
+            if (!validPassword)
+            {
+                ModelState.AddModelError("Error", "Входът е неуспешен");
+                return View(model);
+            }
+            await signInManager.SignInAsync(user, model.IsPersistent);
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+
         }
     }
 }
